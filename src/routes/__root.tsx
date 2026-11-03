@@ -100,7 +100,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "stylesheet", href: FONT_CSS },
+      { rel: "preload", as: "image", href: "/logo.png" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
     ],
   }),
   shellComponent: RootShell,
@@ -116,6 +118,13 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        {/* Opening screen: hides text until fonts are ready so nothing jumps in size.
+            First visit shows the logo briefly; later visits open almost instantly. */}
+        <div id="app-splash" aria-hidden="true">
+          <img src="/logo.png" alt="" width={112} height={112} />
+          <span className="app-splash-bar" />
+        </div>
+        <script dangerouslySetInnerHTML={{ __html: SPLASH_JS }} />
         {children}
         <Scripts />
       </body>
@@ -123,18 +132,14 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+const SPLASH_JS = `(function(){var d=document.documentElement,first=false;try{first=!localStorage.getItem("splash-seen");localStorage.setItem("splash-seen","1")}catch(e){}if(first)d.classList.add("splash-first");var t0=Date.now(),min=first?900:0,max=first?3000:1200,done=false;function hide(){if(done)return;done=true;var w=Math.max(0,min-(Date.now()-t0));setTimeout(function(){d.classList.add("splash-done");setTimeout(function(){var e=document.getElementById("app-splash");e&&e.remove()},400)},w)}setTimeout(hide,max);var go=function(){(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(hide)};if(document.readyState==="complete")go();else window.addEventListener("load",go)})();`;
+
 const FONT_CSS = "https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600;700;800&family=Inter:wght@400;500;600&display=swap";
 
 /** Non-critical startup work, run after first paint: web fonts (no render blocking) and report sync. */
 function DeferredStartup() {
   const [idle, setIdle] = useState(false);
   useEffect(() => {
-    if (!document.querySelector(`link[href="${FONT_CSS}"]`)) {
-      const l = document.createElement("link");
-      l.rel = "stylesheet";
-      l.href = FONT_CSS;
-      document.head.appendChild(l);
-    }
     const w = window as Window & { requestIdleCallback?: (cb: () => void) => number };
     if (w.requestIdleCallback) w.requestIdleCallback(() => setIdle(true));
     else setTimeout(() => setIdle(true), 1500);
