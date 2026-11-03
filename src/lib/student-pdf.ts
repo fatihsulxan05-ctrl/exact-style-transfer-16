@@ -2,7 +2,7 @@ import { localIso } from "@/lib/utils";
 // Colourful student PDFs (full family report and single tutanak), built from data with jsPDF.
 // jsPDF / pdf-lib load lazily so they never slow app startup.
 import type { AttendanceRow, Student, Tutanak } from "./store";
-import { computeStats, monthly, VAKITLER } from "./stats";
+import { computeStats, daysSinceFirst, monthly, VAKITLER } from "./stats";
 import { getFile } from "./attachments";
 import { loadFonts } from "./report-export";
 import { fileSlug } from "./report";
@@ -141,12 +141,12 @@ function statTiles(f: Flow, rows: AttendanceRow[]) {
   const d = f.doc;
   const st = computeStats(rows);
   const tiles: [string, number, RGB, RGB][] = [
-    ["Namaza Katıldığı Gün", st.namazGun, C.green, C.greenSoft],
+    ["Cemaatle Kılınan Namaz", st.namazKilinan, C.green, C.greenSoft],
     ["Derse Girdiği", st.ders, C.blue, C.blueSoft],
     ["Geç Kaldığı", st.gec, C.amber, C.amberSoft],
-    ["Katılmadığı", st.katilmadi, C.red, C.redSoft],
+    ["Katılmadığı Namaz", st.namazKacirilan, C.red, C.redSoft],
     ["İzinli Gün", st.izinli, C.violet, C.violetSoft],
-    ["Toplam Gün", st.toplam, C.gray, C.graySoft],
+    ["Toplam Gün", daysSinceFirst(rows), C.gray, C.graySoft],
   ];
   const w = (CW - 8) / 3, h = 22;
   f.ensure(2 * h + 6);

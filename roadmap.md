@@ -10,3 +10,4 @@
 - [x] AI Tutanak page: short note -> full formal tutanak with child name and date (save, PDF, copy).
 - [x] Fix attendance errors: paper photos read X as "gelmedi", attendance auto-saves, reports count each day once.
 - [x] Email times: daily 21:00, weekly Sunday 09:00, monthly last day 09:00 (Istanbul); remove the group and address-hint notes.
+- [x] Student page + family PDF: replace day boxes with prayer counts (Cemaatle kılınan namaz, Katılmadığı namaz, Toplam Gün since first record).
