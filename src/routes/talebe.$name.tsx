@@ -13,7 +13,7 @@ import { TutanakFiles } from "@/components/app/TutanakFiles";
 import { deleteFile } from "@/lib/attachments";
 import { useStore, type Student, type Tutanak } from "@/lib/store";
 import { PdfButton } from "@/components/app/PdfButton";
-import { computeStats, monthly, VAKITLER } from "@/lib/stats";
+import { computeStats, daysSinceFirst, monthly, VAKITLER } from "@/lib/stats";
 
 export const Route = createFileRoute("/talebe/$name")({
   head: () => ({

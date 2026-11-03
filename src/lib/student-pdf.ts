@@ -2,7 +2,7 @@ import { localIso } from "@/lib/utils";
 // Colourful student PDFs (full family report and single tutanak), built from data with jsPDF.
 // jsPDF / pdf-lib load lazily so they never slow app startup.
 import type { AttendanceRow, Student, Tutanak } from "./store";
-import { computeStats, monthly, VAKITLER } from "./stats";
+import { computeStats, daysSinceFirst, monthly, VAKITLER } from "./stats";
 import { getFile } from "./attachments";
 import { loadFonts } from "./report-export";
 import { fileSlug } from "./report";
