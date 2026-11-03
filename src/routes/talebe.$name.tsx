@@ -228,12 +228,12 @@ function TalebeDetay() {
             </div>
             <div className="mt-5 grid grid-cols-3 gap-y-6 border-t border-border pt-5 text-center">
               {[
-                { icon: CheckCircle2, v: st.namazGun, l: "Namaza Katıldığı", c: "text-good" },
+                { icon: CheckCircle2, v: st.namazKilinan, l: "Cemaatle Kılınan Namaz", c: "text-good" },
                 { icon: CheckCircle2, v: st.ders, l: "Derse Girdiği", c: "text-good" },
                 { icon: Clock, v: st.gec, l: "Geç Kaldığı", c: "text-warn" },
-                { icon: CalendarX, v: st.katilmadi, l: "Katılmadığı", c: "text-destructive" },
+                { icon: CalendarX, v: st.namazKacirilan, l: "Katılmadığı Namaz", c: "text-destructive" },
                 { icon: CalendarOff, v: st.izinli, l: "İzinli Gün", c: "text-info" },
-                { icon: CalendarDays, v: st.toplam, l: "Toplam Gün", c: "text-muted-foreground" },
+                { icon: CalendarDays, v: daysSinceFirst(rows), l: "Toplam Gün", c: "text-muted-foreground" },
               ].map((s) => (
                 <div key={s.l}>
                   <s.icon className={`mx-auto h-7 w-7 ${s.c}`} />

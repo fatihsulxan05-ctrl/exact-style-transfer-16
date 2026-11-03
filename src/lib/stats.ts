@@ -72,8 +72,22 @@ export function computeStats(rows: AttendanceRow[]) {
     hasta: rows.filter((r) => hasNote(r, "hasta")).length,
     katilmadi: rows.filter((r) => dayResult(r, COLUMNS) === "katilmadi").length,
     namazGun: rows.filter((r) => prayedCount(r) > 0).length,
+    /** Prayers (vakit cells) attended with the congregation, on time or late. */
+    namazKilinan: rows.reduce((a, r) => a + prayedCount(r), 0),
+    /** Prayers (vakit cells) missed without excuse. */
+    namazKacirilan: rows.reduce((a, r) => a + VAKITLER.filter((v) => cellStatus(r, v) === "yok").length, 0),
     vakit,
   };
+}
+
+/** Days from the student's first record up to today, both inclusive (0 when no records). */
+export function daysSinceFirst(rows: Pick<AttendanceRow, "date">[], today: Date = new Date()): number {
+  if (!rows.length) return 0;
+  const first = rows.map((r) => r.date).sort()[0];
+  const [y, m, d] = first.split("-").map(Number);
+  const start = Date.UTC(y, m - 1, d);
+  const end = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+  return Math.max(0, Math.round((end - start) / 86400000)) + 1;
 }
 
 const AYLAR = ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"];
