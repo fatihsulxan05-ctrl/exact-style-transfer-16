@@ -113,13 +113,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="tr">
+    <html lang="tr" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
-        {/* Opening screen: hides text until fonts are ready so nothing jumps in size.
-            First visit shows the logo briefly; later visits open almost instantly. */}
+        {/* Opening screen: a short logo splash on every launch, like a native app.
+            It also hides text until fonts are ready so nothing jumps in size. */}
         <div id="app-splash" aria-hidden="true">
           <img src="/logo.png" alt="" width={112} height={112} />
           <span className="app-splash-bar" />
@@ -132,7 +132,7 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
-const SPLASH_JS = `(function(){var d=document.documentElement,first=false;try{first=!localStorage.getItem("splash-seen");localStorage.setItem("splash-seen","1")}catch(e){}if(first)d.classList.add("splash-first");var t0=Date.now(),min=first?900:0,max=first?3000:1200,done=false;function hide(){if(done)return;done=true;var w=Math.max(0,min-(Date.now()-t0));setTimeout(function(){d.classList.add("splash-done");setTimeout(function(){var e=document.getElementById("app-splash");e&&e.remove()},400)},w)}setTimeout(hide,max);var go=function(){(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(hide)};if(document.readyState==="complete")go();else window.addEventListener("load",go)})();`;
+const SPLASH_JS = `(function(){var d=document.documentElement;d.classList.add("splash-on");var t0=Date.now(),min=700,max=2500,done=false;function hide(){if(done)return;done=true;var w=Math.max(0,min-(Date.now()-t0));setTimeout(function(){d.classList.add("splash-done");setTimeout(function(){var e=document.getElementById("app-splash");e&&e.remove()},400)},w)}setTimeout(hide,max);var go=function(){(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(hide)};if(document.readyState==="complete")go();else window.addEventListener("load",go)})();`;
 
 const FONT_CSS = "https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600;700;800&family=Inter:wght@400;500;600&display=swap";
 

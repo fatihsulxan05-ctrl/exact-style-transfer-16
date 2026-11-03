@@ -201,8 +201,8 @@
 }
 #app-splash img,
 #app-splash .app-splash-bar { opacity: 0; }
-.splash-first #app-splash img { opacity: 1; animation: splash-pop 0.6s ease-out both; }
-.splash-first #app-splash .app-splash-bar {
+#app-splash img { opacity: 1; animation: splash-pop 0.6s ease-out both; }
+#app-splash .app-splash-bar {
   opacity: 1;
   width: 7rem;
   height: 3px;
