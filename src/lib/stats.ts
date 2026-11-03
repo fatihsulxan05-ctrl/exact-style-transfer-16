@@ -83,8 +83,8 @@ export function computeStats(rows: AttendanceRow[]) {
 /** Days from the student's first record up to today, both inclusive (0 when no records). */
 export function daysSinceFirst(rows: Pick<AttendanceRow, "date">[], today: Date = new Date()): number {
   if (!rows.length) return 0;
-  const first = rows.map((r) => r.date).sort()[0];
-  const [y, m, d] = first.split("-").map(Number);
+  const first = rows.map((r) => r.date).sort()[0] ?? "";
+  const [y = 0, m = 1, d = 1] = first.split("-").map(Number);
   const start = Date.UTC(y, m - 1, d);
   const end = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
   return Math.max(0, Math.round((end - start) / 86400000)) + 1;
