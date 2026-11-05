@@ -15,7 +15,6 @@ import { groupLabel } from "@/lib/groups";
 const EmailReports = lazy(() => import("@/components/app/EmailReports").then((m) => ({ default: m.EmailReports })));
 const ReportSheet = lazy(() => import("@/components/app/ReportSheet").then((m) => ({ default: m.ReportSheet })));
 const BlankAttendanceSheet = lazy(() => import("@/components/app/BlankAttendanceSheet").then((m) => ({ default: m.BlankAttendanceSheet })));
-const PhotoNamesImport = lazy(() => import("@/components/app/PhotoNamesImport").then((m) => ({ default: m.PhotoNamesImport })));
 
 export const Route = createFileRoute("/menu")({
   head: () => ({
@@ -88,7 +87,6 @@ function Menu() {
       <div className="mt-5 space-y-3">
         <button onClick={() => setAddOpen(true)} className={`${btn} border-primary bg-primary text-primary-foreground`}><UserPlus className="h-5 w-5" /> Talebe Ekle</button>
         <Sheet open={addOpen} onClose={() => setAddOpen(false)} title={`Yeni Talebe · ${groupLabel(group)}`}>
-          {addOpen && <Suspense fallback={null}><PhotoNamesImport onDone={(n) => { setAddOpen(false); setMsg(`${n} talebe eklendi.`); }} /></Suspense>}
           <StudentForm initial={emptyStudent} onSubmit={(s) => { addStudent(s); setAddOpen(false); setMsg(`${s.name} eklendi.`); }} />
         </Sheet>
         <Button variant="outline" onClick={() => {
