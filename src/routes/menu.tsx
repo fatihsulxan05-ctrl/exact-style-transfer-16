@@ -15,7 +15,6 @@ import { groupLabel } from "@/lib/groups";
 const EmailReports = lazy(() => import("@/components/app/EmailReports").then((m) => ({ default: m.EmailReports })));
 const ReportSheet = lazy(() => import("@/components/app/ReportSheet").then((m) => ({ default: m.ReportSheet })));
 const BlankAttendanceSheet = lazy(() => import("@/components/app/BlankAttendanceSheet").then((m) => ({ default: m.BlankAttendanceSheet })));
-const PhotoNamesImport = lazy(() => import("@/components/app/PhotoNamesImport").then((m) => ({ default: m.PhotoNamesImport })));
 
 export const Route = createFileRoute("/menu")({
   head: () => ({
