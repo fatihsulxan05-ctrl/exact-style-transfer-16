@@ -1,4 +1,5 @@
 # Tasks
+- [x] Show the opening logo only at app startup, remove forced waiting, and verify page transitions do not restart it.
 - [x] Include the full selected week/month in attendance exports; leave unrecorded days blank and verify PDF/Excel.
 - [x] Provide 55 clearly labeled trial students without replacing existing students and verify full-period exports with them.
 - [x] Complete per-cell attendance statuses and PDF/Excel totals; verify saved marks and exports.

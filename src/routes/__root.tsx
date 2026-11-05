@@ -13,6 +13,7 @@ import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { AppShell } from "@/components/app/AppShell";
+import { StartupSplash } from "@/components/app/StartupSplash";
 import { StoreProvider } from "../lib/store";
 // Background report sync is not needed for first paint; load it after the app is idle.
 const ReportAutoSync = lazy(() => import("../components/app/EmailReports").then((m) => ({ default: m.ReportAutoSync })));
@@ -118,21 +119,12 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {/* Opening screen: a short logo splash on every launch, like a native app.
-            It also hides text until fonts are ready so nothing jumps in size. */}
-        <div id="app-splash" aria-hidden="true">
-          <img src="/logo.png" alt="" width={112} height={112} />
-          <span className="app-splash-bar" />
-        </div>
-        <script dangerouslySetInnerHTML={{ __html: SPLASH_JS }} />
         {children}
         <Scripts />
       </body>
     </html>
   );
 }
-
-const SPLASH_JS = `(function(){var d=document.documentElement;d.classList.add("splash-on");var t0=Date.now(),min=700,max=2500,done=false;function hide(){if(done)return;done=true;var w=Math.max(0,min-(Date.now()-t0));setTimeout(function(){d.classList.add("splash-done");setTimeout(function(){var e=document.getElementById("app-splash");e&&e.remove()},400)},w)}setTimeout(hide,max);var go=function(){(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(hide)};if(document.readyState==="complete")go();else window.addEventListener("load",go)})();`;
 
 const FONT_CSS = "https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600;700;800&family=Inter:wght@400;500;600&display=swap";
 
@@ -153,6 +145,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <StoreProvider>
+        <StartupSplash />
         <DeferredStartup />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <AppShell>
