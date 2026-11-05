@@ -41,7 +41,6 @@ export function StartupSplash() {
   return (
     <div id="app-splash" className={leaving ? "app-splash-leaving" : undefined} role="status" aria-label="Uygulama açılıyor">
       <img src="/logo.png" alt="" width={112} height={112} />
-      <span className="app-splash-bar" />
     </div>
   );
 }
