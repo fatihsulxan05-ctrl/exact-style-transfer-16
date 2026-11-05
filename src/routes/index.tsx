@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Search, User, GraduationCap, Users } from "@/components/app/icons";
 import { Avatar } from "@/components/app/AppShell";
 import { useStore } from "@/lib/store";
+import { autoLevel, LEVEL_ORDER } from "@/lib/stats";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -19,9 +20,13 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const { students } = useStore();
+  const { students, attendance } = useStore();
   const [q, setQ] = useState("");
-  const list = students.filter((s) => s.name.toLocaleLowerCase("tr").includes(q.toLocaleLowerCase("tr")));
+  const levels = new Map(students.map((s) => [s.id, autoLevel(attendance.filter((a) => a.studentId === s.id))]));
+  const list = students
+    .filter((s) => s.name.toLocaleLowerCase("tr").includes(q.toLocaleLowerCase("tr")))
+    .sort((a, b) => { const x = levels.get(a.id)!, y = levels.get(b.id)!; return LEVEL_ORDER[x.level] - LEVEL_ORDER[y.level] || y.rate - x.rate; });
+  const dot = { "Çok İyi": "bg-good", "İyi": "bg-good", "Orta": "bg-warn", "Zayıf": "bg-destructive", "Yeni": "bg-muted-foreground" } as const;
   return (
     <>
       <div className="mt-7 flex items-center justify-between">
@@ -56,8 +61,8 @@ function Index() {
                   <p className="text-sm text-muted-foreground">{s.group || "Talebe"}</p>
                 </div>
                 <span className="flex items-center gap-1.5 rounded-full bg-brand-soft px-3 py-1 text-sm">
-                  <span className={`h-1.5 w-1.5 rounded-full ${s.status === "İyi" ? "bg-good" : "bg-warn"}`} />
-                  {s.status}
+                  <span className={`h-1.5 w-1.5 rounded-full ${dot[levels.get(s.id)!.level]}`} />
+                  {levels.get(s.id)!.level}
                 </span>
               </Link>
             ))}

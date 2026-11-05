@@ -109,3 +109,21 @@ export function monthly(rows: AttendanceRow[]) {
       };
     });
 }
+
+export type AutoLevel = "Çok İyi" | "İyi" | "Orta" | "Zayıf" | "Yeni";
+export const LEVEL_ORDER: Record<AutoLevel, number> = { "Çok İyi": 0, "İyi": 1, "Orta": 2, "Zayıf": 3, "Yeni": 4 };
+
+/** Automatic status from all prayer + lesson cells; İzinli/Hasta cells are not counted against the student. */
+export function autoLevel(rows: AttendanceRow[]): { level: AutoLevel; rate: number } {
+  let came_ = 0, total = 0;
+  for (const r of latestPerDay(rows)) for (const c of COLUMNS) {
+    const s = cellStatus(r, c);
+    if (s === "izinli" || s === "hasta") continue;
+    total++;
+    if (came(s)) came_++;
+  }
+  if (total === 0) return { level: "Yeni", rate: 0 };
+  const rate = came_ / total;
+  const level: AutoLevel = rate >= 0.9 ? "Çok İyi" : rate >= 0.75 ? "İyi" : rate >= 0.5 ? "Orta" : "Zayıf";
+  return { level, rate };
+}
