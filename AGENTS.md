@@ -10,7 +10,7 @@
 <!-- LOVABLE:END -->
 
 ## Project rules
-- The opening logo is React-owned inside the shared root, never removed by inline DOM scripts; it dismisses on font readiness with a bounded fallback so navigation cannot restart it or break hydration.
+- The opening logo is React-owned inside the shared root, never removed by inline DOM scripts; use a short legibility interval, font readiness, a bounded fallback and React-owned dismissal so navigation cannot restart it or break hydration.
 - Attendance cells are read and changed through pure helpers in `src/lib/stats.ts`; all views and exports reuse them so per-cell notes and day totals cannot diverge.
 - Attendance report export (PDF via jspdf, Excel via xlsx-js-style because plain SheetJS cannot write borders/rotated text for the namaz takip çizelgesi) lives in `src/lib/report-export.ts` and loads those libraries with dynamic `import()` so they never slow app startup; period/summary logic stays pure in `src/lib/report.ts` with tests.
 - ReportSheet passes the selected range into the shared buildChart model so PDF and Excel enumerate the same calendar days; missing student-day records produce blank marks without invoking absence totals.
