@@ -27,9 +27,6 @@ export function StudentForm({ initial, onSubmit }: { initial: StudentInput; onSu
         <Field label="Veli"><input className={inputCls} value={f.guardian} onChange={set("guardian")} /></Field>
         <Field label="Telefon"><input type="tel" className={inputCls} value={f.phone} onChange={set("phone")} /></Field>
       </div>
-      <Field label="Durum">
-        <select className={inputCls} value={f.status} onChange={set("status")}><option>İyi</option><option>Orta</option></select>
-      </Field>
       <button className={primaryBtn} disabled={!f.name.trim()}>Kaydet</button>
     </form>
   );
